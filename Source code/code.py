@@ -66,6 +66,7 @@ def prepare_data(seperate=False):
     label2 = []
     label22=[]
     ttfnl=[]   
+   
     for i in range(0, assoc_dv.shape[0]):  
         for j in range(0, assoc_dv.shape[1]):         
             if interaction[i, j] == 1:                      
@@ -83,9 +84,11 @@ def prepare_data(seperate=False):
                 testfnl.append(test_fea)                    
     m = np.arange(len(label2))           
     np.random.shuffle(m)
+    
     for x in m:
         ttfnl.append(testfnl[x])
         label22.append(label2[x])   
+    
     for x in range(0, link_number):      
         tfnl= ttfnl[x]                                    
         lab= label22[x]                                      
@@ -98,6 +101,7 @@ def prepare_data(seperate=False):
 def transfer_array_format(data):    
     formated_matrix1 = []
     formated_matrix2 = []
+    
     for val in data:     
         formated_matrix1.append(val[0])  
         formated_matrix2.append(val[1])  
@@ -117,6 +121,7 @@ def features(x,y):
     model = Sequential()
     
     return_sequences=True
+    
     model.add(Convolution2D(16, (1,16),strides=(2,1), activation='relu', padding='same',                        data_format='channels_last',name='layer1_con1',input_shape=(1,253,1)))
     model.add(Dropout(0.5)) 
     
@@ -151,6 +156,7 @@ def GA(feacnn,y_train):
     
   G1model = G1model.fit(feacnn,y_train)
   print('features',G1model.support_)
+  
   encoder = LabelEncoder()
   fea_final=encoder.fit_transform(G1model.support_)
   count_arr = np.bincount(fea_final)    
@@ -169,6 +175,7 @@ def GA(feacnn,y_train):
   G2model.add(layers.Dense(64,activation='relu',input_shape=(Gfea.shape[1],)))
   G2model.add(layers.Dense(64,activation='relu'))
   G2model.compile(optimizer='adam',loss=tensorflow.keras.losses.SparseCategoricalCrossentropy(from_logits=True),metrics=['accuracy']
+  
   G2model.summary()
   G2model_out=G2model.predict(Gfea)
   return G2model,G2model_out,fea_final
@@ -184,6 +191,7 @@ def calculate_performace(test_num, pred_y,  labels):
     fp = 0
     tn = 0
     fn = 0
+    
     for index in range(test_num):
         if labels[index] ==1:
             if labels[index] == pred_y[index]:
@@ -314,6 +322,7 @@ def dvacgd():
     Mean_Result=[]
     Mean_Result= np.mean(np.array(all_performance_DF), axis=0)
     print ('----' * 10)
+    
     print('Mean-Accuracy=', Mean_Result[0],'\n Mean-precision=',Mean_Result[1])
     print('Mean-Sensitivity=', Mean_Result[2], '\n Mean-Specificity=',Mean_Result[3])
     print('Mean-MCC=', Mean_Result[4],'\n' 'Mean-auc_score=',Mean_Result[5])
