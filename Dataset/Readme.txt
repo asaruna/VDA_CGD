@@ -6,4 +6,4 @@
 4. code.py- Code for the implementation.
 5. csv files with drug and virus names
 
-*Researchers can use the code with proper citation.
+**Researchers can use the code with proper citation**
